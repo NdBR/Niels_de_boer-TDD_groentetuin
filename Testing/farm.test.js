@@ -20,6 +20,7 @@ describe("getYieldForCrop", () => {
             crop: corn,
             numCrops: 10,
         };
+
         expect(getYieldForCrop(input)).toBe(30);
     });
 });

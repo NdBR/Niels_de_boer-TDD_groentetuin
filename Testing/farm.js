@@ -1,6 +1,6 @@
 const getYieldForPlant = plant => plant.yield;
 
-const getYieldForCrop = (input) => 0;
+const getYieldForCrop = (input) => input.crop.yield * input.numCrops;
 
 const getTotalYield = (crops) => 1;
 
