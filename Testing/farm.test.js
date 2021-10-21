@@ -58,10 +58,11 @@ describe("getCostsForCrop", () => {
             name: "corn",
             costOfOnePlant: 1
         };
-        const crop = [
-            { plant: corn, numPlants: 10 },
-        ];
-        expect(getCostsForCrop(crop)).toBe(10)
+        const input = {
+            crop: corn,
+            numPlants: 10,
+        };
+        expect(getCostsForCrop(input)).toBe(10)
 
     });
 });
