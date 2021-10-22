@@ -17,24 +17,24 @@ const getYieldForPlant = (plant, environmentFactors) => {
 
 //total yield of one kind of crop = number of crops * yield of crop
 const getYieldForCrop = (object, environmentFactors) => {
-    if (environmentFactors) {
-        // calculate yield of one crop
-        const getEnvironment = Object.entries(environmentFactors) //make array of factors
-        const YieldPlusfactorArray = [object.crop.yield]
+        if (environmentFactors) {
+            // calculate yield of one crop
+            const getEnvironment = Object.entries(environmentFactors) //make array of factors
+            const YieldPlusfactorArray = [object.crop.yield]
 
-        getEnvironment.forEach(item => {
-            if (object.crop.factors[item[0]]) { //check if the factor is in crop object
-                YieldPlusfactorArray.push(((object.crop.factors[item[0]][item[1]]) / 100) + 1)
-                    //  item[0] refers to name of factor( exp: sun), 
-                    // item[1] refers to name of value ( exp: low)
-            }
-        })
+            getEnvironment.forEach(item => {
+                if (object.crop.factors[item[0]]) { //check if the factor is in crop object
+                    YieldPlusfactorArray.push(((object.crop.factors[item[0]][item[1]]) / 100) + 1)
+                        //  item[0] refers to name of factor( exp: sun), 
+                        // item[1] refers to name of value ( exp: low)
+                }
+            })
 
-        // calculate total of crops
-        return (YieldPlusfactorArray.reduce((a, b) => a * b)) * object.numCrops
-    } else return object.crop.yield * object.numCrops
-}
-
+            // calculate total of crops
+            return (YieldPlusfactorArray.reduce((a, b) => a * b)) * object.numCrops
+        } else return object.crop.yield * object.numCrops
+    }
+    // total yield of all crops = all yield of induvidual crop added together
 const getTotalYield = (wholeCropsObject, environmentFactors) => {
     if (environmentFactors) {
         return (wholeCropsObject.crops)
@@ -47,7 +47,11 @@ const getTotalYield = (wholeCropsObject, environmentFactors) => {
 const getCostsForCrop = (input) => input.numPlants * input.crop.costOfOnePlant;
 
 // revenue = kilo * salePrice
-const getRevenueForCrop = (input) => input.numKilo * input.crop.salePrice;
+const getRevenueForCrop = (input, environmentFactors) => {
+    if (environmentFactors) {
+        return (getYieldForCrop(input, environmentFactors))
+    } else return input.crop.yield * input.crop.salePrice;
+}
 
 // profit = revenue - cost
 const getProfitForCrop = (input) => getRevenueForCrop(input) - getCostsForCrop(input)
