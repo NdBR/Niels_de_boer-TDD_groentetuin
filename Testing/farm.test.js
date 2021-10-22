@@ -8,6 +8,19 @@ const {
     getTotalProfit
 } = require("./farm");
 
+// original test
+describe("getYieldForPlant", () => {
+    const corn = {
+        name: "corn",
+        yield: 30,
+    };
+
+    test("Get yield for plant with no environment factors", () => {
+        expect(getYieldForPlant(corn)).toBe(30);
+    });
+});
+
+// test wit extra environment factors
 describe("getYieldForPlant", () => {
     const corn = {
         name: "corn",
@@ -18,20 +31,24 @@ describe("getYieldForPlant", () => {
                 medium: 0,
                 high: 50,
             },
-            wind: {
-                high: -25
+            ground: {
+                sand: -50,
+                clay: 10,
+                mud: 0
             }
-        },
-    };
-
+        }
+    }
     const environmentFactors = {
         sun: "low",
         wind: "high",
+        ground: "clay",
     };
-    test("Get yield for plant with 1 environment factors", () => {
-        expect(getYieldForPlant(corn, environmentFactors)).toBe(15);
-    });
-});
+
+    test
+        ("Get yield for plant with mutliple and only relevant environment factors", () => {
+            expect(getYieldForPlant(corn, environmentFactors)).toBe(16.5);
+        });
+})
 
 describe("getYieldForCrop", () => {
     test("Get yield for crop, simple", () => {

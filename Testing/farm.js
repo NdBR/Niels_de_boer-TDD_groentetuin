@@ -1,25 +1,17 @@
 // yield = produce of plant
 const getYieldForPlant = (plant, environmentFactors) => {
-    if (environmentFactors != "") {
-        const getEnvironment = Object.entries(environmentFactors)
-        console.log("het hele object enviroment factors in array", getEnvironment)
-
-        const factorArray = []
+    if (environmentFactors) {
+        const getEnvironment = Object.entries(environmentFactors) //make array of factors
+        const YieldPlusfactorArray = [plant.yield]
 
         getEnvironment.forEach(item => {
-            const environmentNameOfFactor = item[0]
-            const getEnvironmentFactorValueName = item[1]
-
-            if (plant.factors[environmentNameOfFactor] != "") {
-                const valuefactor = (plant.factors[environmentNameOfFactor][getEnvironmentFactorValueName])
-                return console.log(((valuefactor / 100) + 1))
+            if (plant.factors[item[0]]) { //check if the factor is in plant object
+                YieldPlusfactorArray.push(((plant.factors[item[0]][item[1]]) / 100) + 1)
+                    //  item[0] refers to name of factor( exp: sun), 
+                    // item[1] refers to name of value ( exp: low)
             }
-
-            // const iets = getfactor
-            // console.log(factorArray)
-            // return getEnvironmentFactors
-
         })
+        return YieldPlusfactorArray.reduce((a, b) => a * b) //mutiply all 
     } else return plant.yield
 }
 
