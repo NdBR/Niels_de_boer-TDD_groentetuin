@@ -22,34 +22,34 @@ describe("getYieldForPlant", () => {
 
 // test wit extra environment factors
 describe("getYieldForPlant", () => {
-    const corn = {
-        name: "corn",
-        yield: 30,
-        factors: {
-            sun: {
-                low: -50,
-                medium: 0,
-                high: 50,
-            },
-            ground: {
-                sand: -50,
-                clay: 10,
-                mud: 0
+        const corn = {
+            name: "corn",
+            yield: 30,
+            factors: {
+                sun: {
+                    low: -50,
+                    medium: 0,
+                    high: 50,
+                },
+                ground: {
+                    sand: -50,
+                    clay: 10,
+                    mud: 0
+                }
             }
         }
-    }
-    const environmentFactors = {
-        sun: "low",
-        wind: "high",
-        ground: "clay",
-    };
+        const environmentFactors = {
+            sun: "low",
+            wind: "high",
+            ground: "clay",
+        };
 
-    test
-        ("Get yield for plant with mutliple and only relevant environment factors", () => {
-            expect(getYieldForPlant(corn, environmentFactors)).toBe(16.5);
-        });
-})
-
+        test
+            ("Get yield for plant with mutliple and only relevant environment factors", () => {
+                expect(getYieldForPlant(corn, environmentFactors)).toBe(16.5);
+            });
+    })
+    // original test
 describe("getYieldForCrop", () => {
     test("Get yield for crop, simple", () => {
         const corn = {
@@ -62,6 +62,36 @@ describe("getYieldForCrop", () => {
         };
 
         expect(getYieldForCrop(input)).toBe(30);
+    });
+});
+// test with extra environmentfactors
+describe("getYieldForCrop", () => {
+    test("Get yield for crop, with environment factor sun and rain", () => {
+        const corn = {
+            name: "corn",
+            yield: 3,
+            factors: {
+                sun: {
+                    low: -50,
+                    medium: 0,
+                    high: 50,
+                },
+                rain: {
+                    low: -20,
+                    medium: 0,
+                    high: -50,
+                },
+            },
+        };
+        const input = {
+            crop: corn,
+            numCrops: 10,
+        };
+        const environmentFactors = {
+            sun: "high",
+            rain: "low",
+        };
+        expect(getYieldForCrop(input, environmentFactors)).toBe(36);
     });
 });
 

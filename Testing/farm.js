@@ -16,7 +16,24 @@ const getYieldForPlant = (plant, environmentFactors) => {
 }
 
 //total yield of one kind of crop = number of crops * yield of crop
-const getYieldForCrop = (input) => input.crop.yield * input.numCrops;
+const getYieldForCrop = (input, environmentFactors) => {
+    if (environmentFactors) {
+        // calculate yield of one crop
+        const getEnvironment = Object.entries(environmentFactors) //make array of factors
+        const YieldPlusfactorArray = [input.crop.yield]
+
+        getEnvironment.forEach(item => {
+            if (input.crop.factors[item[0]]) { //check if the factor is in crop object
+                YieldPlusfactorArray.push(((input.crop.factors[item[0]][item[1]]) / 100) + 1)
+                    //  item[0] refers to name of factor( exp: sun), 
+                    // item[1] refers to name of value ( exp: low)
+            }
+        })
+
+        // calculate total of crops
+        return (YieldPlusfactorArray.reduce((a, b) => a * b)) * input.numCrops
+    } else return input.crop.yield * input.numCrops
+}
 
 const getTotalYield = (wholeCropsObject) =>
     (wholeCropsObject.crops).map(crop => getYieldForCrop(crop)).reduce((cTotal, i) => i + cTotal);
