@@ -16,27 +16,32 @@ const getYieldForPlant = (plant, environmentFactors) => {
 }
 
 //total yield of one kind of crop = number of crops * yield of crop
-const getYieldForCrop = (input, environmentFactors) => {
+const getYieldForCrop = (object, environmentFactors) => {
     if (environmentFactors) {
         // calculate yield of one crop
         const getEnvironment = Object.entries(environmentFactors) //make array of factors
-        const YieldPlusfactorArray = [input.crop.yield]
+        const YieldPlusfactorArray = [object.crop.yield]
 
         getEnvironment.forEach(item => {
-            if (input.crop.factors[item[0]]) { //check if the factor is in crop object
-                YieldPlusfactorArray.push(((input.crop.factors[item[0]][item[1]]) / 100) + 1)
+            if (object.crop.factors[item[0]]) { //check if the factor is in crop object
+                YieldPlusfactorArray.push(((object.crop.factors[item[0]][item[1]]) / 100) + 1)
                     //  item[0] refers to name of factor( exp: sun), 
                     // item[1] refers to name of value ( exp: low)
             }
         })
 
         // calculate total of crops
-        return (YieldPlusfactorArray.reduce((a, b) => a * b)) * input.numCrops
-    } else return input.crop.yield * input.numCrops
+        return (YieldPlusfactorArray.reduce((a, b) => a * b)) * object.numCrops
+    } else return object.crop.yield * object.numCrops
 }
 
-const getTotalYield = (wholeCropsObject) =>
-    (wholeCropsObject.crops).map(crop => getYieldForCrop(crop)).reduce((cTotal, i) => i + cTotal);
+const getTotalYield = (wholeCropsObject, environmentFactors) => {
+    if (environmentFactors) {
+        return (wholeCropsObject.crops)
+            .map(crop => getYieldForCrop(crop, environmentFactors)).reduce((cTotal, i) => i + cTotal);
+    } else return (wholeCropsObject.crops)
+        .map(crop => getYieldForCrop(crop)).reduce((cTotal, i) => i + cTotal);
+}
 
 //  costs = number of plants * cost of 1 plant
 const getCostsForCrop = (input) => input.numPlants * input.crop.costOfOnePlant;

@@ -95,6 +95,7 @@ describe("getYieldForCrop", () => {
     });
 });
 
+// original test
 describe("getTotalYield", () => {
     test("Calculate total yield with multiple crops", () => {
         const corn = {
@@ -121,6 +122,57 @@ describe("getTotalYield", () => {
         expect(getTotalYield({ crops })).toBe(0);
     });
 });
+
+// test with environment factors
+describe("getTotalYield", () => {
+
+    test("Calculate total yield with multiple crops and environtFactors", () => {
+
+        const corn = {
+            name: "corn",
+            yield: 3,
+            factors: {
+                sun: {
+                    low: -50,
+                    medium: 0,
+                    high: 50,
+                },
+                rain: {
+                    low: -20,
+                    medium: 0,
+                    high: -50,
+                },
+            },
+        };
+        const pumpkin = {
+            name: "corn",
+            yield: 3,
+            factors: {
+                sun: {
+                    low: -50,
+                    medium: 0,
+                    high: 50,
+                },
+                ground: {
+                    sand: -50,
+                    clay: 10,
+                    mud: 0
+                }
+            },
+        };
+        const environmentFactors = {
+            sun: "high",
+            rain: "low",
+            ground: "clay"
+        };
+        const crops = [
+            { crop: corn, numCrops: 5 },
+            { crop: pumpkin, numCrops: 2 },
+        ];
+        expect(getTotalYield({ crops }, environmentFactors)).toBe(27.9);
+
+    })
+})
 
 describe("getCostsForCrop", () => {
     test("calculate the costs for 1 field of the same plants ", () => {
